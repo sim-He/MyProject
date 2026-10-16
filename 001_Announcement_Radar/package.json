@@ -1,0 +1,38 @@
+{
+  "name": "notice-watch-desktop",
+  "version": "1.0.0",
+  "private": true,
+  "author": "公告雷达",
+  "description": "定时监测官网公告并在桌面端汇总展示",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron .",
+    "check": "node --check src/main.js && node --check src/preload.js && node --check src/renderer.js",
+    "dist": "node scripts/build.js"
+  },
+  "dependencies": {
+    "cheerio": "^1.1.2"
+  },
+  "devDependencies": {
+    "electron": "^38.2.2",
+    "electron-builder": "^26.0.12"
+  },
+  "build": {
+    "appId": "com.noticewatch.desktop",
+    "productName": "公告雷达",
+    "files": [
+      "src/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": ["nsis", "portable"]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "shortcutName": "公告雷达"
+    }
+  }
+}

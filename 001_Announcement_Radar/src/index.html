@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; script-src 'self'; img-src 'self' data:">
+  <title>公告雷达</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand"><div class="logo">雷</div><div><b>公告雷达</b><small>Notice Watch</small></div></div>
+    <nav>
+      <button class="nav active" data-view="inbox"><span>◈</span>公告收件箱 <i id="unreadBadge">0</i></button>
+      <button class="nav" data-view="sources"><span>⌁</span>监测链接</button>
+      <button class="nav" data-view="settings"><span>⚙</span>设置</button>
+    </nav>
+    <div class="sidebar-foot"><span class="pulse"></span><span id="scheduleLabel">自动监测已开启</span></div>
+  </aside>
+
+  <main>
+    <header>
+      <div><h1 id="pageTitle">公告收件箱</h1><p id="pageDesc">集中查看所有网站的新公告与摘要</p></div>
+      <div class="header-actions"><button class="btn secondary" id="scanAllBtn">⟳ 立即检查</button><button class="btn primary" id="addSourceBtn">＋ 添加链接</button></div>
+    </header>
+
+    <section id="inboxView" class="view active">
+      <div class="stats">
+        <div class="stat"><span>未读公告</span><strong id="statUnread">0</strong><small>等待你查看</small></div>
+        <div class="stat"><span>监测网站</span><strong id="statSources">0</strong><small>个公告来源</small></div>
+        <div class="stat"><span>今日发现</span><strong id="statToday">0</strong><small>条新信息</small></div>
+      </div>
+      <div class="toolbar"><div class="filters"><button class="chip active" data-filter="all">全部</button><button class="chip" data-filter="unread">仅未读</button></div><button class="link-btn" id="clearReadBtn">清理已读</button></div>
+      <div id="noticeList" class="notice-list"></div>
+    </section>
+
+    <section id="sourcesView" class="view">
+      <div class="panel-head"><div><h2>监测链接</h2><p>右键任意链接可打开网页、立即检查或暂停监测</p></div></div>
+      <div id="sourceList" class="source-list"></div>
+    </section>
+
+    <section id="settingsView" class="view">
+      <div class="settings-card">
+        <h2>监测设置</h2>
+        <label class="setting-row"><span><b>检查间隔</b><small>最短为 5 分钟</small></span><div class="inline"><input id="intervalInput" type="number" min="5" max="10080"><em>分钟</em></div></label>
+        <label class="setting-row"><span><b>桌面通知</b><small>发现新公告时提醒我</small></span><input id="notifyInput" type="checkbox" class="switch"></label>
+        <label class="setting-row"><span><b>开机启动</b><small>登录系统后自动运行</small></span><input id="launchInput" type="checkbox" class="switch"></label>
+      </div>
+      <div class="settings-card">
+        <h2>浏览器设置</h2>
+        <label class="setting-row"><span><b>APP 默认浏览器</b><small>单个链接的设置会优先于此项</small></span><select id="defaultBrowser"></select></label>
+        <div class="browser-head"><span>可用浏览器</span><button class="btn secondary small" id="addBrowserBtn">＋ 添加浏览器程序</button></div>
+        <div id="browserList" class="browser-list"></div>
+      </div>
+    </section>
+  </main>
+
+  <dialog id="sourceDialog">
+    <form method="dialog" id="sourceForm">
+      <div class="dialog-head"><div><h2 id="dialogTitle">添加监测链接</h2><p>首次添加只建立基准，不会把历史内容标成新公告</p></div><button type="button" class="icon-btn close-source-dialog" aria-label="关闭">×</button></div>
+      <input type="hidden" id="sourceId">
+      <label>名称（可选）<input id="sourceName" placeholder="例如：某某大学通知公告"></label>
+      <label>公告栏网址<input id="sourceUrl" required placeholder="https://example.com/notices"></label>
+      <label>此链接使用的浏览器<select id="sourceBrowser"><option value="">跟随 APP 默认设置</option></select></label>
+      <div class="dialog-actions"><button type="button" class="btn secondary close-source-dialog">取消</button><button type="submit" value="default" class="btn primary" id="saveSourceBtn">添加并建立基准</button></div>
+    </form>
+  </dialog>
+  <div id="toast" class="toast"></div>
+  <script src="renderer.js"></script>
+</body>
+</html>
